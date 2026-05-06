@@ -15,7 +15,7 @@ const targetUrl = backendUrl.replace(/\/api\/?$/, '');
 
 console.log(`[Proxy Config] Backend target is: ${targetUrl}`);
 
-app.use('/api', createProxyMiddleware({
+app.use(createProxyMiddleware('/api', {
   target: targetUrl,
   changeOrigin: true,
   logLevel: 'debug',
