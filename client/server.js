@@ -5,7 +5,24 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+import { createProxyMiddleware } from 'http-proxy-middleware';
+
 const app = express();
+
+// Proxy API requests to the Backend to bypass CORS entirely
+const backendUrl = process.env.VITE_API_URL || 'http://localhost:5000';
+// Ensure the backend URL doesn't have a trailing /api since we append it
+const targetUrl = backendUrl.replace(/\/api\/?$/, '');
+
+app.use('/api', createProxyMiddleware({
+  target: targetUrl,
+  changeOrigin: true,
+  logLevel: 'debug',
+  onError: (err, req, res) => {
+    console.error('[Proxy Error]', err);
+    res.status(502).send('Proxy Error: Could not connect to backend.');
+  }
+}));
 
 // Log every single request that hits the server
 app.use((req, res, next) => {
