@@ -18,6 +18,6 @@ app.use((req, res) => {
 // Use the PORT environment variable provided by Railway
 const port = process.env.PORT || 8080;
 
-app.listen(port, '0.0.0.0', () => {
+app.listen(port, () => {
   console.log(`Express static server is running on port ${port}`);
 });
