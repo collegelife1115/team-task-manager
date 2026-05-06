@@ -12,5 +12,10 @@ export default defineConfig({
         changeOrigin: true,
       }
     }
+  },
+  preview: {
+    host: true, // binds to 0.0.0.0 for external access
+    port: parseInt(process.env.PORT) || 5173,
+    allowedHosts: true,
   }
 })
