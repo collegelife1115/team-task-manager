@@ -10,7 +10,9 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 const app = express();
 
 // Proxy API requests to the Backend to bypass CORS entirely
-const targetUrl = process.env.VITE_API_URL || 'http://localhost:5000/api';
+const rawUrl = process.env.VITE_API_URL || 'http://localhost:5000/api';
+// Remove any trailing slash to prevent double-slash errors
+const targetUrl = rawUrl.replace(/\/$/, '');
 
 console.log(`[Proxy Config] Backend target is: ${targetUrl}`);
 
