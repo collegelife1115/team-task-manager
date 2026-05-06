@@ -18,6 +18,10 @@ app.use('/api', createProxyMiddleware({
   target: targetUrl,
   changeOrigin: true,
   logLevel: 'debug',
+  onProxyReq: (proxyReq, req, res) => {
+    // Log the EXACT final URL we are sending to
+    console.log(`[Proxy] ${req.method} ${req.url} -> ${targetUrl}${req.url}`);
+  },
   onError: (err, req, res) => {
     console.error('[Proxy Error]', err);
     res.status(502).send('Proxy Error: Could not connect to backend.');
