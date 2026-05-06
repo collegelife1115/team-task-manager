@@ -9,6 +9,12 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const app = express();
 
+// Log every single request that hits the server
+app.use((req, res, next) => {
+  console.log(`[Frontend] ${req.method} ${req.url}`);
+  next();
+});
+
 // Proxy API requests to the Backend to bypass CORS entirely
 const rawUrl = process.env.VITE_API_URL || 'http://localhost:5000';
 // Remove any trailing slash and ensure it ends with /api
@@ -25,19 +31,13 @@ app.use('/api', createProxyMiddleware({
   logLevel: 'debug',
   onProxyReq: (proxyReq, req, res) => {
     // Log the EXACT final URL we are sending to
-    console.log(`[Proxy] ${req.method} ${req.url} -> ${targetUrl}${req.url}`);
+    console.log(`[Proxy Action] ${req.method} ${req.url} -> ${targetUrl}${req.url}`);
   },
   onError: (err, req, res) => {
     console.error('[Proxy Error]', err);
     res.status(502).send('Proxy Error: Could not connect to backend.');
   }
 }));
-
-// Log every single request that hits the server
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-  next();
-});
 
 // Explicit health check endpoint for Railway proxy
 app.get('/health', (req, res) => {
