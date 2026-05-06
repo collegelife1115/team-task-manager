@@ -11,8 +11,9 @@ const app = express();
 
 // Proxy API requests to the Backend to bypass CORS entirely
 const backendUrl = process.env.VITE_API_URL || 'http://localhost:5000';
-// Ensure the backend URL doesn't have a trailing /api since we append it
 const targetUrl = backendUrl.replace(/\/api\/?$/, '');
+
+console.log(`[Proxy Config] Backend target is: ${targetUrl}`);
 
 app.use('/api', createProxyMiddleware({
   target: targetUrl,
