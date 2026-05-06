@@ -15,6 +15,12 @@ const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
+// Log incoming requests to debug proxy routing
+app.use((req, res, next) => {
+  console.log(`[Backend] ${req.method} ${req.url}`);
+  next();
+});
+
 // Body parser
 app.use(express.json());
 
