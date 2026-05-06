@@ -85,12 +85,12 @@ exports.getMe = async (req, res, next) => {
 const sendTokenResponse = (user, statusCode, res) => {
   // Create token
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
+    expiresIn: process.env.JWT_EXPIRE || '30d',
   });
 
   const options = {
     expires: new Date(
-      Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+      Date.now() + (parseInt(process.env.COOKIE_EXPIRE) || 30) * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
   };
