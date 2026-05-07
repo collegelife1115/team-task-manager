@@ -1,95 +1,97 @@
-# Team Task Manager
+# Anti Gravity - Team Task Manager
 
-A full-stack web application built with the MERN stack (MongoDB, Express, React, Node.js) for managing team projects and tasks with Role-Based Access Control (RBAC).
+A premium, full-stack Task Management application built with the MERN stack. Designed with a sleek **Deep Charcoal / Space Gray** aesthetic, featuring glassmorphism and smooth micro-interactions.
 
-## Features
+## 🚀 Features
 
-- **User Authentication**: Secure sign-up and login using JSON Web Tokens (JWT).
-- **Role-Based Access Control (RBAC)**: Support for different user roles (e.g., Admin, Manager, Intern) with varying permissions.
-- **Project Management**: Create, view, update, and manage team projects.
-- **Task Management**: Assign, track, and update tasks within projects.
-- **Interactive UI**: A modern, responsive interface built with React and styled with Tailwind CSS, featuring smooth animations using Framer Motion.
-- **Data Visualization**: Charts and analytics for project/task progress tracking using Chart.js.
+- **Role-Based Access Control (RBAC)**:
+  - 🛡️ **Admin**: Full system control, including User Management, Project Creation, and Task Assignment.
+  - 💼 **Manager**: Can create new projects and assign tasks to any employee (Managers or Interns).
+  - 🎓 **Intern**: Can track assigned tasks and update their progress.
+- **Project Management**: Dedicated dashboard for creating and monitoring team-wide projects with deadline tracking.
+- **Dynamic Task Board**: Assign tasks to specific team members with priority levels, due dates, and real-time status updates.
+- **Admin Panel**: Centralized user management for adding new team members and managing roles.
+- **Premium UI/UX**:
+  - Dark-themed glassmorphism design.
+  - Interactive modals for all creation flows.
+  - Responsive layouts for desktop and mobile.
+  - Real-time data synchronization with the backend.
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-### Frontend (Client)
-- **Framework**: [React.js](https://reactjs.org/) with [Vite](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **UI Components**: [Headless UI](https://headlessui.dev/), [Heroicons](https://heroicons.com/), [Lucide React](https://lucide.dev/)
-- **Routing**: [React Router](https://reactrouter.com/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **Charts**: [Chart.js](https://www.chartjs.org/) & [react-chartjs-2](https://react-chartjs-2.js.org/)
-- **HTTP Client**: [Axios](https://axios-http.com/)
+### Frontend
+- **Framework**: React.js (Vite)
+- **Styling**: Vanilla CSS with Tailwind CSS for layout utilities
+- **Icons**: Lucide React
+- **State Management**: React Context API (Auth Context)
+- **HTTP Client**: Axios
 
-### Backend (Server)
-- **Runtime**: [Node.js](https://nodejs.org/)
-- **Framework**: [Express.js](https://expressjs.com/)
-- **Database**: [MongoDB](https://www.mongodb.com/) with [Mongoose](https://mongoosejs.com/)
-- **Authentication**: [JSON Web Tokens (JWT)](https://jwt.io/) & [bcryptjs](https://www.npmjs.com/package/bcryptjs)
-- **Validation**: [Joi](https://joi.dev/)
+### Backend
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Database**: MongoDB (Mongoose)
+- **Security**: JWT Authentication, Bcrypt password hashing
+- **Middleware**: Custom RBAC and Validation logic
 
-## Project Structure
+## 📂 Project Structure
 
 ```
 .
-├── client/                 # Frontend React application
-│   ├── src/                # React source code (components, pages, context, etc.)
-│   ├── package.json        # Frontend dependencies and scripts
-│   └── vite.config.js      # Vite configuration
+├── client/                 # React Frontend
+│   ├── src/
+│   │   ├── components/     # Reusable UI (Modals, Layout, etc.)
+│   │   ├── context/        # Auth and Global State
+│   │   ├── pages/          # Dashboard, Projects, Tasks, Admin Panel
+│   │   └── services/       # API integration
+│   └── package.json
 │
-└── server/                 # Backend Express application
-    ├── controllers/        # Route controllers (logic)
-    ├── models/             # Mongoose schemas (User, Task, Project)
-    ├── routes/             # Express routes (auth, user, task, project)
-    ├── middleware/         # Custom middleware (auth, validation)
-    └── package.json        # Backend dependencies and scripts
+└── server/                 # Express Backend
+    ├── controllers/        # Business Logic
+    ├── models/             # Database Schemas
+    ├── routes/             # API Endpoints
+    ├── middleware/         # Auth & RBAC
+    └── server.js           # Entry Point
 ```
 
-## Getting Started
+## ⚙️ Getting Started
 
 ### Prerequisites
-- Node.js (v16 or higher recommended)
-- MongoDB (Local or Atlas)
+- Node.js (v18+)
+- MongoDB connection string
 
-### Installation
+### Setup
 
-1. **Clone the repository** (if applicable) and navigate to the project directory.
-
-2. **Install Backend Dependencies**
+1. **Clone & Install**:
    ```bash
-   cd server
-   npm install
+   # Install server dependencies
+   cd server && npm install
+   
+   # Install client dependencies
+   cd ../client && npm install
    ```
 
-3. **Install Frontend Dependencies**
-   ```bash
-   cd ../client
-   npm install
+2. **Environment Variables**:
+   Create a `.env` in `server/`:
+   ```env
+   PORT=5000
+   MONGO_URI=your_mongodb_uri
+   JWT_SECRET=your_secret_key
    ```
 
-### Configuration
+3. **Run Locally**:
+   ```bash
+   # Start Backend (from server directory)
+   npm run dev
+   
+   # Start Frontend (from client directory)
+   npm run dev
+   ```
 
-1. **Backend Environment Variables**: 
-   Create a `.env` file in the `server` directory and add the necessary environment variables (e.g., `PORT`, `MONGO_URI`, `JWT_SECRET`).
+## 📝 Recent Updates
+- ✅ **Project Creation**: Admins and Managers can now create new projects.
+- ✅ **Task Assignment**: Tasks can now be assigned to any team member (Managers/Interns).
+- ✅ **User Management**: Admins can add new users directly from the Admin Panel.
+- ✅ **UI Refinement**: Added premium glassmorphism modals and an "Assignee" column to the task board.
 
-2. **Frontend Environment Variables**:
-   If needed, create a `.env` file in the `client` directory for Vite specific environment variables (e.g., `VITE_API_URL`).
-
-### Running the Application Locally
-
-You can run the client and server separately.
-
-**Start the Backend Server:**
-```bash
-cd server
-npm run dev
-```
-
-**Start the Frontend Development Server:**
-```bash
-cd client
-npm run dev
-```
-
-The frontend will typically run on `http://localhost:5173` and the backend on the port specified in your `.env` file (e.g., `http://localhost:5000`).
+---
+Built with ❤️ by the Anti Gravity Team.
