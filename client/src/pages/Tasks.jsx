@@ -1,17 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
-import { Plus, CheckCircle, Clock, AlertCircle, RefreshCw } from 'lucide-react';
+import { Plus, CheckCircle, Clock, AlertCircle, RefreshCw, X } from 'lucide-react';
+import Modal from '../components/Modal';
 
 const Tasks = () => {
   const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [projects, setProjects] = useState([]);
+  const [interns, setInterns] = useState([]);
+  const [newTask, setNewTask] = useState({
+    title: '',
+    description: '',
+    project: '',
+    assignee: '',
+    dueDate: '',
+    priority: 'Medium'
+  });
+  const [formLoading, setFormLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+    if (user?.role === 'admin' || user?.role === 'manager') {
+      fetchProjects();
+      fetchInterns();
+    }
+  }, [user]);
+
+  const fetchProjects = async () => {
+    try {
+      const res = await api.get('/projects');
+      setProjects(res.data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchInterns = async () => {
+    try {
+      const res = await api.get('/users');
+      // Only interns should be assignable
+      setInterns(res.data.data.filter(u => u.role === 'intern'));
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const fetchTasks = async () => {
     try {
@@ -36,6 +73,22 @@ const Tasks = () => {
     }
   };
 
+  const handleAssignTask = async (e) => {
+    e.preventDefault();
+    setFormLoading(true);
+    setError('');
+    try {
+      await api.post('/tasks', newTask);
+      setIsModalOpen(false);
+      setNewTask({ title: '', description: '', project: '', assignee: '', dueDate: '', priority: 'Medium' });
+      fetchTasks();
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to assign task');
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
   const getStatusIcon = (status) => {
     switch (status) {
       case 'Completed': return <CheckCircle size={18} className="text-emerald-500" />;
@@ -52,7 +105,10 @@ const Tasks = () => {
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-white">Your Task Board</h2>
         {(user?.role === 'admin' || user?.role === 'manager') && (
-          <button className="btn-primary flex items-center space-x-2">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="btn-primary flex items-center space-x-2"
+          >
             <Plus size={18} />
             <span>Assign Task</span>
           </button>
@@ -130,6 +186,112 @@ const Tasks = () => {
           )}
         </div>
       )}
+
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        title="Assign New Task"
+      >
+        <form onSubmit={handleAssignTask} className="space-y-4">
+          {error && (
+            <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+          
+          <div>
+            <label className="block text-sm font-medium text-space-400 mb-1">Task Title</label>
+            <input
+              type="text"
+              required
+              className="input-field"
+              placeholder="Enter task title"
+              value={newTask.title}
+              onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-space-400 mb-1">Description</label>
+            <textarea
+              required
+              className="input-field min-h-[80px]"
+              placeholder="Task details..."
+              value={newTask.description}
+              onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-space-400 mb-1">Project</label>
+              <select
+                required
+                className="input-field"
+                value={newTask.project}
+                onChange={(e) => setNewTask({ ...newTask, project: e.target.value })}
+              >
+                <option value="">Select Project</option>
+                {projects.map(p => (
+                  <option key={p._id} value={p._id}>{p.name}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-space-400 mb-1">Assignee (Intern)</label>
+              <select
+                required
+                className="input-field"
+                value={newTask.assignee}
+                onChange={(e) => setNewTask({ ...newTask, assignee: e.target.value })}
+              >
+                <option value="">Select Intern</option>
+                {interns.map(i => (
+                  <option key={i._id} value={i._id}>{i.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-space-400 mb-1">Due Date</label>
+              <input
+                type="date"
+                required
+                className="input-field"
+                value={newTask.dueDate}
+                onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-space-400 mb-1">Priority</label>
+              <select
+                className="input-field"
+                value={newTask.priority}
+                onChange={(e) => setNewTask({ ...newTask, priority: e.target.value })}
+              >
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            disabled={formLoading}
+            className="btn-primary w-full flex items-center justify-center space-x-2 py-3 mt-4"
+          >
+            {formLoading ? <span>Assigning...</span> : (
+              <>
+                <Plus size={20} />
+                <span>Assign Task</span>
+              </>
+            )}
+          </button>
+        </form>
+      </Modal>
     </div>
   );
 };

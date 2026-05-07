@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import { UserPlus, Trash2, Edit2, Shield, User } from 'lucide-react';
+import { UserPlus, Trash2, Edit2, Shield, User, X } from 'lucide-react';
+import Modal from '../components/Modal';
 
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newUser, setNewUser] = useState({
+    name: '',
+    email: '',
+    password: '',
+    role: 'intern'
+  });
+  const [formLoading, setFormLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchUsers();
@@ -18,6 +28,22 @@ const AdminPanel = () => {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAddUser = async (e) => {
+    e.preventDefault();
+    setFormLoading(true);
+    setError('');
+    try {
+      await api.post('/users', newUser);
+      setIsModalOpen(false);
+      setNewUser({ name: '', email: '', password: '', role: 'intern' });
+      fetchUsers();
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to create user');
+    } finally {
+      setFormLoading(false);
     }
   };
 
@@ -36,7 +62,10 @@ const AdminPanel = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-white">User Management</h2>
-        <button className="btn-primary flex items-center space-x-2">
+        <button 
+          onClick={() => setIsModalOpen(true)}
+          className="btn-primary flex items-center space-x-2"
+        >
           <UserPlus size={18} />
           <span>Add New User</span>
         </button>
@@ -82,6 +111,82 @@ const AdminPanel = () => {
           ))}
         </div>
       )}
+
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        title="Create New User"
+      >
+        <form onSubmit={handleAddUser} className="space-y-4">
+          {error && (
+            <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+          
+          <div>
+            <label className="block text-sm font-medium text-space-400 mb-1">Full Name</label>
+            <input
+              type="text"
+              required
+              className="input-field"
+              placeholder="Enter full name"
+              value={newUser.name}
+              onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-space-400 mb-1">Email Address</label>
+            <input
+              type="email"
+              required
+              className="input-field"
+              placeholder="Enter email address"
+              value={newUser.email}
+              onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-space-400 mb-1">Password</label>
+            <input
+              type="password"
+              required
+              className="input-field"
+              placeholder="Set password"
+              value={newUser.password}
+              onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-space-400 mb-1">Role</label>
+            <select
+              className="input-field"
+              value={newUser.role}
+              onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+            >
+              <option value="intern">Intern</option>
+              <option value="manager">Manager</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
+          <button 
+            type="submit" 
+            disabled={formLoading}
+            className="btn-primary w-full flex items-center justify-center space-x-2 py-3 mt-4"
+          >
+            {formLoading ? <span>Creating...</span> : (
+              <>
+                <UserPlus size={20} />
+                <span>Create User</span>
+              </>
+            )}
+          </button>
+        </form>
+      </Modal>
     </div>
   );
 };
