@@ -124,6 +124,7 @@ const Tasks = () => {
               <tr className="border-b border-space-800 bg-space-900/50">
                 <th className="px-6 py-4 text-xs font-semibold text-space-400 uppercase tracking-wider">Task</th>
                 <th className="px-6 py-4 text-xs font-semibold text-space-400 uppercase tracking-wider">Project</th>
+                <th className="px-6 py-4 text-xs font-semibold text-space-400 uppercase tracking-wider">Assignee</th>
                 <th className="px-6 py-4 text-xs font-semibold text-space-400 uppercase tracking-wider">Due Date</th>
                 <th className="px-6 py-4 text-xs font-semibold text-space-400 uppercase tracking-wider">Priority</th>
                 <th className="px-6 py-4 text-xs font-semibold text-space-400 uppercase tracking-wider">Status</th>
@@ -141,6 +142,14 @@ const Tasks = () => {
                     <span className="text-xs font-medium text-space-300 bg-space-800 px-2 py-1 rounded">
                       {task.project?.name || 'Deleted Project'}
                     </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex flex-col">
+                      <span className="text-sm text-white">{task.assignee?.name || 'Unassigned'}</span>
+                      <span className="text-[10px] text-space-500 uppercase tracking-wider font-bold">
+                        {task.assignee?.role || ''}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-space-400">
                     {new Date(task.dueDate).toLocaleDateString()}
