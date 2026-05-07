@@ -51,11 +51,11 @@ exports.createTask = async (req, res, next) => {
       return res.status(404).json({ success: false, error: 'Project not found' });
     }
 
-    // Check if assignee is an Intern (Managers can only assign to Interns)
+    // Check if assignee is an Intern or Manager (Managers can assign to both)
     if (req.user.role === 'manager') {
       const assignee = await User.findById(req.body.assignee);
-      if (!assignee || assignee.role !== 'intern') {
-        return res.status(400).json({ success: false, error: 'Managers can only assign tasks to Interns' });
+      if (!assignee || (assignee.role !== 'intern' && assignee.role !== 'manager')) {
+        return res.status(400).json({ success: false, error: 'Managers can only assign tasks to Interns or other Managers' });
       }
     }
 

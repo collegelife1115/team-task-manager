@@ -43,8 +43,8 @@ const Tasks = () => {
   const fetchInterns = async () => {
     try {
       const res = await api.get('/users');
-      // Only interns should be assignable
-      setInterns(res.data.data.filter(u => u.role === 'intern'));
+      // Managers and Interns should be assignable
+      setInterns(res.data.data.filter(u => u.role === 'intern' || u.role === 'manager'));
     } catch (err) {
       console.error(err);
     }
@@ -238,16 +238,16 @@ const Tasks = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-space-400 mb-1">Assignee (Intern)</label>
+              <label className="block text-sm font-medium text-space-400 mb-1">Assignee</label>
               <select
                 required
                 className="input-field"
                 value={newTask.assignee}
                 onChange={(e) => setNewTask({ ...newTask, assignee: e.target.value })}
               >
-                <option value="">Select Intern</option>
+                <option value="">Select Assignee</option>
                 {interns.map(i => (
-                  <option key={i._id} value={i._id}>{i.name}</option>
+                  <option key={i._id} value={i._id}>{i.name} ({i.role})</option>
                 ))}
               </select>
             </div>
