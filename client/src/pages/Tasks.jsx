@@ -43,8 +43,8 @@ const Tasks = () => {
   const fetchInterns = async () => {
     try {
       const res = await api.get('/users');
-      // Managers and Interns should be assignable
-      setInterns(res.data.data.filter(u => u.role === 'intern' || u.role === 'manager'));
+      // Show all employees for assignment
+      setInterns(res.data.data);
     } catch (err) {
       console.error(err);
     }
