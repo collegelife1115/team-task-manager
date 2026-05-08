@@ -1,97 +1,107 @@
-# Anti Gravity - Team Task Manager
+Team Task Manager
 
-A premium, full-stack Task Management application built with the MERN stack. Designed with a sleek **Deep Charcoal / Space Gray** aesthetic, featuring glassmorphism and smooth micro-interactions.
+A premium, full-stack Task Management application built with the MERN stack. Designed with a sleek Deep Charcoal / Space Gray aesthetic, featuring glassmorphism and smooth micro-interactions.
 
-## 🚀 Features
-
-- **Role-Based Access Control (RBAC)**:
-  - 🛡️ **Admin**: Full system control, including User Management, Project Creation, and Task Assignment.
-  - 💼 **Manager**: Can create new projects and assign tasks to any employee (Managers or Interns).
-  - 🎓 **Intern**: Can track assigned tasks and update their progress.
-- **Project Management**: Dedicated dashboard for creating and monitoring team-wide projects with deadline tracking.
-- **Dynamic Task Board**: Assign tasks to specific team members with priority levels, due dates, and real-time status updates.
-- **Admin Panel**: Centralized user management for adding new team members and managing roles.
-- **Premium UI/UX**:
-  - Dark-themed glassmorphism design.
-  - Interactive modals for all creation flows.
-  - Responsive layouts for desktop and mobile.
-  - Real-time data synchronization with the backend.
-
-## 🛠️ Tech Stack
-
-### Frontend
-- **Framework**: React.js (Vite)
-- **Styling**: Vanilla CSS with Tailwind CSS for layout utilities
-- **Icons**: Lucide React
-- **State Management**: React Context API (Auth Context)
-- **HTTP Client**: Axios
-
-### Backend
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: MongoDB (Mongoose)
-- **Security**: JWT Authentication, Bcrypt password hashing
-- **Middleware**: Custom RBAC and Validation logic
-
-## 📂 Project Structure
-
-```
+🚀 Features
+Role-Based Access Control (RBAC)
+🛡️ Admin
+Full system control
+User Management
+Project Creation
+Task Assignment
+💼 Manager
+Create and manage projects
+Assign tasks to Managers and Interns
+Monitor team progress
+🎓 Intern
+Track assigned tasks
+Update task progress and status
+📁 Project Management
+Dedicated dashboard for creating and monitoring projects
+Deadline tracking and progress overview
+Team-wide collaboration support
+📌 Dynamic Task Board
+Assign tasks to specific team members
+Set task priorities and due dates
+Real-time status updates
+Organized workflow tracking
+🛠️ Admin Panel
+Centralized user management
+Add and manage team members
+Assign and update user roles
+🎨 Premium UI/UX
+Dark-themed Glassmorphism design
+Smooth animations and micro-interactions
+Interactive modals for creation flows
+Fully responsive for desktop and mobile
+Real-time frontend and backend synchronization
+🛠️ Tech Stack
+Frontend
+Framework: React.js (Vite)
+Styling: Tailwind CSS + Vanilla CSS
+Icons: Lucide React
+State Management: React Context API
+HTTP Client: Axios
+Backend
+Runtime: Node.js
+Framework: Express.js
+Database: MongoDB with Mongoose
+Authentication: JWT Authentication
+Security: Bcrypt Password Hashing
+Middleware: Custom RBAC & Validation Logic
+📂 Project Structure
 .
 ├── client/                 # React Frontend
 │   ├── src/
-│   │   ├── components/     # Reusable UI (Modals, Layout, etc.)
-│   │   ├── context/        # Auth and Global State
+│   │   ├── components/     # Reusable UI Components
+│   │   ├── context/        # Authentication & Global State
 │   │   ├── pages/          # Dashboard, Projects, Tasks, Admin Panel
-│   │   └── services/       # API integration
+│   │   └── services/       # API Integration
 │   └── package.json
 │
 └── server/                 # Express Backend
     ├── controllers/        # Business Logic
     ├── models/             # Database Schemas
     ├── routes/             # API Endpoints
-    ├── middleware/         # Auth & RBAC
-    └── server.js           # Entry Point
-```
+    ├── middleware/         # Authentication & RBAC
+    └── server.js           # Backend Entry Point
+⚙️ Getting Started
+Prerequisites
+Node.js (v18+)
+MongoDB Connection String
+Setup
+1️⃣ Clone & Install Dependencies
+# Install server dependencies
+cd server
+npm install
 
-## ⚙️ Getting Started
+# Install client dependencies
+cd ../client
+npm install
+2️⃣ Environment Variables
 
-### Prerequisites
-- Node.js (v18+)
-- MongoDB connection string
+Create a .env file inside the server/ directory:
 
-### Setup
-
-1. **Clone & Install**:
-   ```bash
-   # Install server dependencies
-   cd server && npm install
-   
-   # Install client dependencies
-   cd ../client && npm install
-   ```
-
-2. **Environment Variables**:
-   Create a `.env` in `server/`:
-   ```env
-   PORT=5000
-   MONGO_URI=your_mongodb_uri
-   JWT_SECRET=your_secret_key
-   ```
-
-3. **Run Locally**:
-   ```bash
-   # Start Backend (from server directory)
-   npm run dev
-   
-   # Start Frontend (from client directory)
-   npm run dev
-   ```
-
-## 📝 Recent Updates
-- ✅ **Project Creation**: Admins and Managers can now create new projects.
-- ✅ **Task Assignment**: Tasks can now be assigned to any team member (Managers/Interns).
-- ✅ **User Management**: Admins can add new users directly from the Admin Panel.
-- ✅ **UI Refinement**: Added premium glassmorphism modals and an "Assignee" column to the task board.
-
----
-Built with ❤️ by the Anti Gravity Team.
+PORT=5000
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+3️⃣ Run the Application
+Start Backend
+cd server
+npm run dev
+Start Frontend
+cd client
+npm run dev
+✨ Recent Updates
+✅ Project creation for Admins and Managers
+✅ Task assignment to Managers and Interns
+✅ User management from Admin Panel
+✅ Premium glassmorphism modals
+✅ Added “Assignee” column in task board
+✅ Improved responsive layouts and animations
+📌 Future Enhancements
+Real-time notifications
+Team chat integration
+File attachments in tasks
+Analytics dashboard
+Activity logs and audit tracking
