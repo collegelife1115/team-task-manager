@@ -93,5 +93,4 @@ A premium, full-stack Task Management application built with the MERN stack. Des
 - ✅ **User Management**: Admins can add new users directly from the Admin Panel.
 - ✅ **UI Refinement**: Added premium glassmorphism modals and an "Assignee" column to the task board.
 
----
-Built with ❤️ by the Team Task Manager Project.
+
